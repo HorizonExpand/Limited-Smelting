@@ -1,0 +1,16 @@
+{
+  "type": "limited_smelting:fuel_smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "iron_ingot",
+  "ingredient": {
+    "item": "minecraft:copper_ingot"
+  },
+  "result": {
+    "item": "minecraft:iron_ingot"
+  },
+  "required_fuel": {
+    "tag": "minecraft:wool"
+  }
+}

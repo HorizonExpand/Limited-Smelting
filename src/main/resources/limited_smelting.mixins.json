@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.horizonexpand.limited_smelting.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "limited_smelting.refmap.json",
+  "mixins": [
+    "FurnaceMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "type": "limited_smelting:fuel_smelting",
+  "type": "limited_smelting:fuel_blasting",
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.7,

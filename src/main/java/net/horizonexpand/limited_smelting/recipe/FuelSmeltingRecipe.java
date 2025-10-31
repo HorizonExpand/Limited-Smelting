@@ -2,14 +2,12 @@ package net.horizonexpand.limited_smelting.recipe;
 
 import com.google.gson.JsonObject;
 import net.horizonexpand.limited_smelting.LimitedSmelting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Nullable;
 
 public class FuelSmeltingRecipe extends AbstractCookingRecipe {
     private final Ingredient requiredFuel;
@@ -55,24 +53,29 @@ public class FuelSmeltingRecipe extends AbstractCookingRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<FuelSmeltingRecipe> {
-        public static final Serializer INSTANCE = new Serializer();
+        public static final Serializer INSTANCE = new Serializer(Type.INSTANCE);
         public static final ResourceLocation ID = new ResourceLocation(LimitedSmelting.MOD_ID, "fuel_smelting");
+
+        private final RecipeType<?> recipeType;
+
+        public Serializer(RecipeType<?> recipeType) {
+            this.recipeType = recipeType;
+        }
 
         @Override
         public FuelSmeltingRecipe fromJson(ResourceLocation id, JsonObject json) {
             try {
                 String group = GsonHelper.getAsString(json, "group", "");
-                CookingBookCategory cookingbookcategory = CookingBookCategory.CODEC.byName(GsonHelper.getAsString(json, "category", null), CookingBookCategory.MISC);
+                CookingBookCategory cookingbookcategory = (CookingBookCategory)CookingBookCategory.CODEC.byName(GsonHelper.getAsString(json, "category", (String)null), CookingBookCategory.MISC);
                 Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
                 ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
                 float experience = GsonHelper.getAsFloat(json, "experience", 0.0F);
                 int cookingTime = GsonHelper.getAsInt(json, "cookingtime", 200);
-                Ingredient requiredFuel = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "required_fuel"));
-
-                System.out.println("Loaded recipe: " + id + " for type " + Type.INSTANCE);
-
-                return new FuelSmeltingRecipe(Type.INSTANCE, id, group, cookingbookcategory, ingredient, result, experience, cookingTime, requiredFuel);
-
+                Ingredient requiredFuel = json.has("required_fuel")
+                        ? Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "required_fuel"))
+                        : Ingredient.EMPTY;
+                System.out.println("Loaded recipe: " + id + " for type " + recipeType);
+                return new FuelSmeltingRecipe(recipeType, id, group, cookingbookcategory, ingredient, result, experience, cookingTime, requiredFuel);
             } catch (Exception e) {
                 System.err.println("Error parsing recipe " + id + ": " + e.getMessage());
                 throw e;
@@ -88,7 +91,7 @@ public class FuelSmeltingRecipe extends AbstractCookingRecipe {
             float experience = buffer.readFloat();
             int cookingTime = buffer.readVarInt();
             Ingredient requiredFuel = Ingredient.fromNetwork(buffer);
-            return new FuelSmeltingRecipe(Type.INSTANCE, id, group, cookingbookcategory, ingredient, result, experience, cookingTime, requiredFuel);
+            return new FuelSmeltingRecipe(recipeType, id, group, cookingbookcategory, ingredient, result, experience, cookingTime, requiredFuel);
         }
 
         @Override

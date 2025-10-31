@@ -66,17 +66,12 @@ public class FuelSmeltingCategory implements IRecipeCategory<FuelSmeltingRecipe>
     }
 
     public void draw(FuelSmeltingRecipe block, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        drawType(guiGraphics, 4, 4, block);
+        drawType(guiGraphics, block);
     }
 
-    protected void drawType(GuiGraphics guiGraphics, int x, int y, FuelSmeltingRecipe block) {
+    protected void drawType(GuiGraphics guiGraphics, FuelSmeltingRecipe block) {
         ItemStack blockToastSymbol = block.getToastSymbol();
-        Component typeString = Component.translatable("gui.jei.category.fuel_smelting.type" + blockToastSymbol);
-        Minecraft minecraft = Minecraft.getInstance();
-        Font fontRenderer = minecraft.font;
-        int stringWidth = fontRenderer.width(typeString);
 
-        guiGraphics.renderItem(blockToastSymbol, x, y);
-        guiGraphics.drawString(fontRenderer, typeString, getWidth() - stringWidth, 0, 0xFF808080, false);
+        guiGraphics.renderItem(blockToastSymbol, 31, 1);
     }
 }

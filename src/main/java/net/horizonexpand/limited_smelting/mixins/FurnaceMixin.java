@@ -31,12 +31,12 @@ public abstract class FurnaceMixin {
     @Shadow private int cookingProgress;
 
     @Inject(method = "serverTick", at = @At("HEAD"), cancellable = true)
-    private static void onServerTick(Level level, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity furnace, CallbackInfo ci) {
-        FurnaceMixin mixin = (FurnaceMixin) (Object) furnace;
-        Recipe<?> recipe = level.getRecipeManager().getRecipeFor(((FurnaceMixin)(Object)furnace).recipeType, furnace, level).orElse(null);
-        if (recipe instanceof FuelSmeltingRecipe customRecipe) {
-            ItemStack fuel = furnace.getItem(1);
-            Ingredient requiredFuel = customRecipe.getRequiredFuel();
+    private static void onServerTick(Level level, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity block, CallbackInfo ci) {
+        FurnaceMixin mixin = (FurnaceMixin) (Object) block;
+        Recipe<?> recipe = level.getRecipeManager().getRecipeFor(((FurnaceMixin)(Object)block).recipeType, block, level).orElse(null);
+        if (recipe instanceof FuelSmeltingRecipe fuelCooking) {
+            ItemStack fuel = block.getItem(1);
+            Ingredient requiredFuel = fuelCooking.getRequiredFuel();
 
             if (!fuel.isEmpty()) {
                 mixin.lastFuel = fuel.copy();
@@ -51,7 +51,7 @@ public abstract class FurnaceMixin {
                     }
                 }
                 if (!isValidFuel) {
-                    ((FurnaceMixin) (Object) furnace).cookingProgress = 0;
+                    ((FurnaceMixin) (Object) block).cookingProgress = 0;
                     ci.cancel();
                 }
             }

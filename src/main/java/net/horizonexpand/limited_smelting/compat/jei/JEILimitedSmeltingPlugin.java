@@ -34,9 +34,4 @@ public class JEILimitedSmeltingPlugin implements IModPlugin {
         List<FuelSmeltingRecipe> fuelSmeltingRecipes = recipeManager.getAllRecipesFor(FuelSmeltingRecipe.Type.INSTANCE);
         registration.addRecipes(FuelSmeltingCategory.FUEL_SMELTING_TYPE, fuelSmeltingRecipes);
     }
-
-    @Override
-    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(AbstractFurnaceScreen.class, 60, 30, 20, 30, FuelSmeltingCategory.FUEL_SMELTING_TYPE);
-    }
 }

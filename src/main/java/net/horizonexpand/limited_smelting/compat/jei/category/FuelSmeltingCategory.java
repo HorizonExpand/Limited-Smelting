@@ -18,11 +18,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
-public class FuelSmeltingCategory<T extends AbstractCookingRecipe> implements IRecipeCategory<FuelSmeltingRecipe> {
+public class FuelSmeltingCategory implements IRecipeCategory<FuelSmeltingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(LimitedSmelting.MOD_ID, "fuel_smelting");
     public static final ResourceLocation TEXTURE = new ResourceLocation(ModIds.JEI_ID, "textures/jei/gui/gui_vanilla.png");
 
@@ -66,16 +65,18 @@ public class FuelSmeltingCategory<T extends AbstractCookingRecipe> implements IR
         builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 19).addItemStack(recipe.getResultItem(null));
     }
 
-    public void draw(T recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        drawType(guiGraphics);
+    public void draw(FuelSmeltingRecipe block, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        drawType(guiGraphics, 4, 4, block);
     }
 
-    protected void drawType(GuiGraphics guiGraphics) {
-        RecipeType<FuelSmeltingRecipe> recipeType = getRecipeType();
-        Component typeString = Component.translatable("gui.jei.category.fuel_smelting.type", recipeType);
+    protected void drawType(GuiGraphics guiGraphics, int x, int y, FuelSmeltingRecipe block) {
+        ItemStack blockToastSymbol = block.getToastSymbol();
+        Component typeString = Component.translatable("gui.jei.category.fuel_smelting.type" + blockToastSymbol);
         Minecraft minecraft = Minecraft.getInstance();
         Font fontRenderer = minecraft.font;
         int stringWidth = fontRenderer.width(typeString);
+
+        guiGraphics.renderItem(blockToastSymbol, x, y);
         guiGraphics.drawString(fontRenderer, typeString, getWidth() - stringWidth, 0, 0xFF808080, false);
     }
 }

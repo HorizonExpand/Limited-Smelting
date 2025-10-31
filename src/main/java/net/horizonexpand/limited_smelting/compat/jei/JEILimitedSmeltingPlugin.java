@@ -8,13 +8,9 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.horizonexpand.limited_smelting.LimitedSmelting;
 import net.horizonexpand.limited_smelting.compat.jei.category.FuelSmeltingCategory;
 import net.horizonexpand.limited_smelting.recipe.FuelSmeltingRecipe;
-import net.horizonexpand.limited_smelting.recipe.LimitedSmeltingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
-import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.vehicle.Minecart;
-import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.List;

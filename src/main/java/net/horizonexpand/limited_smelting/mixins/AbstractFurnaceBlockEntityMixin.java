@@ -1,6 +1,6 @@
 package net.horizonexpand.limited_smelting.mixins;
 
-import net.horizonexpand.limited_smelting.recipe.FuelSmeltingRecipe;
+import net.horizonexpand.limited_smelting.recipe.FuelCookingRecipe;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -36,7 +36,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
         AbstractFurnaceBlockEntityMixin mixin = (AbstractFurnaceBlockEntityMixin) (Object) block;
         assert mixin != null;
         Recipe<?> recipe = level.getRecipeManager().getRecipeFor(mixin.recipeType, block, level).orElse(null);
-        if (recipe instanceof FuelSmeltingRecipe fuelCooking) {
+        if (recipe instanceof FuelCookingRecipe fuelCooking) {
             ItemStack fuel = block.getItem(1);
             Ingredient requiredFuel = fuelCooking.getRequiredFuel();
 

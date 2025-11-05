@@ -1,7 +1,6 @@
 package net.horizonexpand.limited_smelting;
 
-import net.horizonexpand.limited_smelting.recipe.FuelCookingReg;
-
+import net.horizonexpand.limited_smelting.recipe.FuelCookingRegister;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -12,6 +11,6 @@ public class LimitedSmelting {
 
     public LimitedSmelting() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        FuelCookingReg.register(bus);
+        FuelCookingRegister.register(bus);
     }
 }

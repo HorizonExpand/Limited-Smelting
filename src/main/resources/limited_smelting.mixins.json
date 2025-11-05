@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "limited_smelting.refmap.json",
   "mixins": [
-    "FurnaceMixin"
+    "AbstractFurnaceBlockEntityMixin"
   ],
   "client": [
   ],

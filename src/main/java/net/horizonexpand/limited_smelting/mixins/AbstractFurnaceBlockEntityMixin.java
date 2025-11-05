@@ -21,19 +21,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractFurnaceBlockEntity.class)
-public abstract class FurnaceMixin {
+public abstract class AbstractFurnaceBlockEntityMixin {
     @Unique
     private ItemStack lastFuel = ItemStack.EMPTY;
 
     @Final
     @Shadow private RecipeType<? extends Recipe<Container>> recipeType;
 
-    @Shadow private int cookingProgress;
+    @Shadow
+    int cookingProgress;
 
     @Inject(method = "serverTick", at = @At("HEAD"), cancellable = true)
     private static void onServerTick(Level level, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity block, CallbackInfo ci) {
-        FurnaceMixin mixin = (FurnaceMixin) (Object) block;
-        Recipe<?> recipe = level.getRecipeManager().getRecipeFor(((FurnaceMixin)(Object)block).recipeType, block, level).orElse(null);
+        AbstractFurnaceBlockEntityMixin mixin = (AbstractFurnaceBlockEntityMixin) (Object) block;
+        assert mixin != null;
+        Recipe<?> recipe = level.getRecipeManager().getRecipeFor(mixin.recipeType, block, level).orElse(null);
         if (recipe instanceof FuelSmeltingRecipe fuelCooking) {
             ItemStack fuel = block.getItem(1);
             Ingredient requiredFuel = fuelCooking.getRequiredFuel();
@@ -51,7 +53,7 @@ public abstract class FurnaceMixin {
                     }
                 }
                 if (!isValidFuel) {
-                    ((FurnaceMixin) (Object) block).cookingProgress = 0;
+                    mixin.cookingProgress = 0;
                     ci.cancel();
                 }
             }

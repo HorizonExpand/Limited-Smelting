@@ -5,6 +5,7 @@ import net.horizonexpand.limited_smelting.recipe.FuelCookingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -40,7 +41,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
             ItemStack fuel = block.getItem(1);
             Ingredient requiredFuel = fuelCooking.getRequiredFuel();
 
-            if (!fuel.isEmpty()) {
+            if (!fuel.isEmpty() && !fuel.is(Items.BUCKET)) {
                 mixin.lastFuel = fuel.copy();
             }
 

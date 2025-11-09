@@ -9,8 +9,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Blocks;
 
-import org.jetbrains.annotations.NotNull;
-
 public class FuelCookingRecipe extends AbstractCookingRecipe {
     private final Ingredient requiredFuel;
 
@@ -32,6 +30,10 @@ public class FuelCookingRecipe extends AbstractCookingRecipe {
 
     public Ingredient getRequiredFuel() {
         return this.requiredFuel;
+    }
+
+    public Ingredient getIngredient() {
+        return this.ingredient;
     }
 
     public RecipeSerializer<?> getSerializer() {

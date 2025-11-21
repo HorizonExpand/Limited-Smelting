@@ -39,4 +39,11 @@ public class FuelCookingRecipe extends AbstractCookingRecipe {
     public RecipeSerializer<?> getSerializer() {
         return FuelCookingRegister.FUEL_SMELTING_SERIALIZER.get();
     }
+
+//    @Override public RecipeType<?> getType() { return Type.INSTANCE; }
+//
+//    public static class Type implements RecipeType<FuelCookingRecipe> {
+//        public static final Type INSTANCE = new Type();
+//        public static final String ID = "fuel_cooking";
+//    }
 }

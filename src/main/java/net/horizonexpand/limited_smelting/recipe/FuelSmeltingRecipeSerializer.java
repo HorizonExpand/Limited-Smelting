@@ -19,7 +19,11 @@ public class FuelSmeltingRecipeSerializer implements RecipeSerializer<FuelCookin
     private final RecipeType<?> recipeType;
 
     public FuelSmeltingRecipeSerializer(RecipeType<?> recipeType) {
+//        switch (recipeType) {
+//            case
+//        }
         this.recipeType = recipeType;
+        System.out.println(recipeType);
     }
 
     public FuelCookingRecipe fromJson(ResourceLocation id, JsonObject json) {

@@ -36,6 +36,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
     private static void onServerTick(Level level, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity block, CallbackInfo ci) {
         AbstractFurnaceBlockEntityMixin mixin = (AbstractFurnaceBlockEntityMixin) (Object) block;
         assert mixin != null;
+        Recipe<?> fr = level.getRecipeManager().getRecipeFor(mixin.recipeType, block, level).orElse(null);
         Recipe<?> recipe = level.getRecipeManager().getRecipeFor(mixin.recipeType, block, level).orElse(null);
         if (recipe instanceof FuelCookingRecipe fuelCooking) {
             ItemStack fuel = block.getItem(1);

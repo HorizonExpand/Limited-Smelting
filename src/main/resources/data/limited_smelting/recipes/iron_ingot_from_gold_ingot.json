@@ -1,5 +1,5 @@
 {
-  "type": "limited_smelting:fuel_smoking",
+  "type": "limited_smelting:fuel_cooking",
   "category": "misc",
   "cookingtime": 500,
   "experience": 100,

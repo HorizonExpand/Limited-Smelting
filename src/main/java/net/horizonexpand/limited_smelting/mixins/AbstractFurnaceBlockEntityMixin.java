@@ -37,33 +37,64 @@ public abstract class AbstractFurnaceBlockEntityMixin {
         Level level = furnace.getLevel();
         if (level == null) return;
 
-        Optional<FuelCookingRecipe> cookingRecipe = level.getRecipeManager()
-                .getRecipeFor(FuelCookingRecipe.Type.FUEL_COOKING, furnace, level);
+        Optional<FuelCookingRecipe> smeltingRecipe = level.getRecipeManager()
+                .getRecipeFor(FuelCookingRecipe.Type.FUEL_SMELTING, furnace, level);
+        Optional<FuelCookingRecipe> blastingRecipe = level.getRecipeManager()
+                .getRecipeFor(FuelCookingRecipe.Type.FUEL_BLASTING, furnace, level);
+        Optional<FuelCookingRecipe> smokingRecipe = level.getRecipeManager()
+                .getRecipeFor(FuelCookingRecipe.Type.FUEL_SMOKING, furnace, level);
 
-        if (cookingRecipe.isEmpty()) {
+        if (smeltingRecipe.isEmpty() && blastingRecipe.isEmpty() && smokingRecipe.isEmpty()) {
             return;
         }
 
-        FuelCookingRecipe fuelCookingRecipe = cookingRecipe.get();
+        FuelCookingRecipe fuelSmeltingRecipe = smeltingRecipe.get();
+        FuelCookingRecipe fuelBlastingRecipe = blastingRecipe.get();
+        FuelCookingRecipe fuelSmokingRecipe = smokingRecipe.get();
+
         ItemStack fuelStack = inventory.get(1);
-        ItemStack result = fuelCookingRecipe.getResultItem(level.registryAccess());
+        ItemStack resultSmelting = fuelSmeltingRecipe.getResultItem(level.registryAccess());
+        ItemStack resultBlasting = fuelBlastingRecipe.getResultItem(level.registryAccess());
+        ItemStack resultSmoking = fuelSmokingRecipe.getResultItem(level.registryAccess());
 
-        if (!fuelStack.isEmpty() && !fuelCookingRecipe.getRequiredFuel().test(fuelStack)) {
+        if (!fuelStack.isEmpty() && !fuelSmeltingRecipe.getRequiredFuel().test(fuelStack) && !fuelBlastingRecipe.getRequiredFuel().test(fuelStack) && !fuelSmokingRecipe.getRequiredFuel().test(fuelStack)) {
             cir.setReturnValue(false);
             return;
         }
 
-        ItemStack outputSlot = inventory.get(2);
-        if (outputSlot.isEmpty()
-                || (ItemStack.isSameItemSameTags(outputSlot, result)
-                && outputSlot.getCount() + result.getCount() <= outputSlot.getMaxStackSize())) {
-            
-            cir.setReturnValue(true);
-        } else {
-            cir.setReturnValue(false);
+        if (recipe.equals(fuelSmeltingRecipe)) {
+            ItemStack outputSlot = inventory.get(2);
+            if (outputSlot.isEmpty()
+                    || (ItemStack.isSameItemSameTags(outputSlot, resultSmelting)
+                    && outputSlot.getCount() + resultSmelting.getCount() <= outputSlot.getMaxStackSize())) {
+
+                cir.setReturnValue(true);
+            } else {
+                cir.setReturnValue(false);
+            }
         }
+        else if (recipe.equals(fuelBlastingRecipe)) {
+            ItemStack outputSlot = inventory.get(2);
+            if (outputSlot.isEmpty()
+                    || (ItemStack.isSameItemSameTags(outputSlot, resultBlasting)
+                    && outputSlot.getCount() + resultBlasting.getCount() <= outputSlot.getMaxStackSize())) {
 
+                cir.setReturnValue(true);
+            } else {
+                cir.setReturnValue(false);
+            }
+        }
+        else if (recipe.equals(fuelSmokingRecipe)) {
+            ItemStack outputSlot = inventory.get(2);
+            if (outputSlot.isEmpty()
+                    || (ItemStack.isSameItemSameTags(outputSlot, resultSmoking)
+                    && outputSlot.getCount() + resultSmoking.getCount() <= outputSlot.getMaxStackSize())) {
 
+                cir.setReturnValue(true);
+            } else {
+                cir.setReturnValue(false);
+            }
+        }
     }
 
     @Inject(method = "burn", at = @At("HEAD"), cancellable = true)
@@ -72,34 +103,66 @@ public abstract class AbstractFurnaceBlockEntityMixin {
         Level level = furnace.getLevel();
         if (level == null) return;
 
-        Optional<FuelCookingRecipe> cookingRecipe = level.getRecipeManager()
-                .getRecipeFor(FuelCookingRecipe.Type.FUEL_COOKING, furnace, level);
+        Optional<FuelCookingRecipe> smeltingRecipe = level.getRecipeManager()
+                .getRecipeFor(FuelCookingRecipe.Type.FUEL_SMELTING, furnace, level);
+        Optional<FuelCookingRecipe> blastingRecipe =level.getRecipeManager()
+                .getRecipeFor(FuelCookingRecipe.Type.FUEL_BLASTING, furnace, level);
+        Optional<FuelCookingRecipe> smokingRecipe = level.getRecipeManager()
+                .getRecipeFor(FuelCookingRecipe.Type.FUEL_SMOKING, furnace, level);
 
-        if (cookingRecipe.isEmpty()) {
+        if (smeltingRecipe.isEmpty() && blastingRecipe.isEmpty() && smokingRecipe.isEmpty()) {
             return;
         }
 
-        FuelCookingRecipe fuelCookingRecipe = cookingRecipe.get();
+        FuelCookingRecipe fuelSmeltingRecipe = smeltingRecipe.get();
+        FuelCookingRecipe fuelBlastingRecipe = blastingRecipe.get();
+        FuelCookingRecipe fuelSmokingRecipe = smokingRecipe.get();
 
         ItemStack input = inventory.get(0);
         ItemStack outputSlot = inventory.get(2);
-        ItemStack result = fuelCookingRecipe.getResultItem(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY));
+        ItemStack resultSmelting = fuelSmeltingRecipe.getResultItem(level.registryAccess());
+        ItemStack resultBlasting = fuelBlastingRecipe.getResultItem(level.registryAccess());
+        ItemStack resultSmoking = fuelSmokingRecipe.getResultItem(level.registryAccess());
 
-        if (!canBurn(registryAccess, fuelCookingRecipe, inventory, itemsCount)) {
+        if (!canBurn(registryAccess, fuelSmeltingRecipe, inventory, itemsCount) && !canBurn(registryAccess, fuelBlastingRecipe, inventory, itemsCount) && !canBurn(registryAccess, fuelSmokingRecipe, inventory, itemsCount)) {
             cir.setReturnValue(false);
             return;
         }
 
         input.shrink(1);
 
-        if (outputSlot.isEmpty()) {
-            inventory.set(2, result.copy());
-        } else {
-            outputSlot.grow(result.getCount());
+        if (recipe.equals(fuelSmeltingRecipe)) {
+            if (outputSlot.isEmpty()) {
+                inventory.set(2, resultSmelting.copy());
+            } else {
+                outputSlot.grow(resultSmelting.getCount());
+            }
+
+            furnace.setRecipeUsed(fuelSmeltingRecipe);
+
+            cir.setReturnValue(true);
         }
+        else if (recipe.equals(fuelBlastingRecipe)) {
+            if (outputSlot.isEmpty()) {
+                inventory.set(2, resultBlasting.copy());
+            } else {
+                outputSlot.grow(resultBlasting.getCount());
+            }
 
-        furnace.setRecipeUsed(fuelCookingRecipe);
+            furnace.setRecipeUsed(fuelBlastingRecipe);
 
-        cir.setReturnValue(true);
+            cir.setReturnValue(true);
+        }
+        else if (recipe.equals(fuelSmokingRecipe)) {
+            if (outputSlot.isEmpty()) {
+                inventory.set(2, resultSmoking.copy());
+            } else {
+                outputSlot.grow(resultSmoking.getCount());
+            }
+
+            furnace.setRecipeUsed(fuelSmokingRecipe);
+
+            cir.setReturnValue(true);
+        }
     }
 }

@@ -15,11 +15,11 @@ public class FuelCookingRegister {
             DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, LimitedSmelting.MOD_ID);
 
     public static final RegistryObject<RecipeSerializer<?>> FUEL_SMELTING_SERIALIZER =
-            RECIPE_SERIALIZERS.register("fuel_smelting", () -> new FuelCookingRecipe.Serializer(RecipeType.SMELTING));
+            RECIPE_SERIALIZERS.register("fuel_smelting", () -> new FuelSmeltingRecipeSerializer(RecipeType.SMELTING));
     public static final RegistryObject<RecipeSerializer<?>> FUEL_BLASTING_SERIALIZER =
-            RECIPE_SERIALIZERS.register("fuel_blasting", () -> new FuelCookingRecipe.Serializer(RecipeType.BLASTING));
+            RECIPE_SERIALIZERS.register("fuel_blasting", () -> new FuelSmeltingRecipeSerializer(RecipeType.BLASTING));
     public static final RegistryObject<RecipeSerializer<?>> FUEL_SMOKING_SERIALIZER =
-            RECIPE_SERIALIZERS.register("fuel_smoking", () -> new FuelCookingRecipe.Serializer(RecipeType.SMOKING));
+            RECIPE_SERIALIZERS.register("fuel_smoking", () -> new FuelSmeltingRecipeSerializer(RecipeType.SMOKING));
 
     public static void register(IEventBus bus) {
         RECIPE_SERIALIZERS.register(bus);

@@ -15,7 +15,7 @@ public class FuelSmokingCategory extends AbstractFuelCookingCategory<FuelCooking
             new RecipeType<>(UID, FuelCookingRecipe.class);
 
     public FuelSmokingCategory(IGuiHelper guiHelper) {
-        super(guiHelper, Blocks.BLAST_FURNACE, "gui.jei.category.fuel_smoking", 200);
+        super(guiHelper, Blocks.SMOKER, "gui.jei.category.fuel_smoking", 200);
     }
 
     @Override
